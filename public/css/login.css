@@ -1,0 +1,129 @@
+/* Warna & font dasar */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #4b0000;
+    font-family: 'Poppins', sans-serif;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Dekorasi lingkaran */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #a91717 0%, #4b0000 80%);
+    opacity: 0.95;
+    z-index: 0;
+}
+
+.circle-top-right {
+    width: 250px;
+    height: 250px;
+    top: -100px;
+    right: -100px;
+}
+
+.circle-bottom-left {
+    width: 300px;
+    height: 300px;
+    bottom: -130px;
+    left: -130px;
+}
+
+/* Kontainer utama */
+.login-container {
+    text-align: center;
+    z-index: 2;
+    position: relative;
+}
+
+/* Logo */
+.logo img {
+    width: 100px;
+    margin-bottom: 20px;
+    border-radius: 36%;
+}
+
+/* Kotak login */
+.login-box {
+    background-color: #fff;
+    padding: 35px 50px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 330px;
+    margin: 0 auto;
+}
+
+/* Judul */
+.login-box h2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #000;
+}
+
+/* Input */
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.login-box input:focus {
+    border-color: #b30000;
+}
+
+/* Tombol Login */
+.login-box button {
+    width: 100%;
+    background-color: #4b0000;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 25px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.login-box button:hover {
+    background-color: #800000;
+}
+
+/* Footer */
+footer {
+    margin-top: 25px;
+    color: #f1f1f1;
+    font-size: 13px;
+}
+
+/* Responsif */
+@media (max-width: 400px) {
+    .login-box {
+        width: 85%;
+        padding: 25px;
+    }
+    .circle-top-right {
+        width: 180px;
+        height: 180px;
+        top: -70px;
+        right: -70px;
+    }
+    .circle-bottom-left {
+        width: 220px;
+        height: 220px;
+        bottom: -90px;
+        left: -90px;
+    }
+}

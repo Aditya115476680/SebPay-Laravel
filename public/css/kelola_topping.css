@@ -1,0 +1,144 @@
+/* ====== Umum ====== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: #330000;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* ====== Judul ====== */
+h4.mb-3 {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6b0000;
+    margin-bottom: 20px;
+}
+
+/* ====== Tombol Tambah ====== */
+.btn.btn-primary.mb-3 {
+    background-color: #8b0000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 600;
+    color: #fff;
+    transition: 0.2s ease;
+}
+
+.btn.btn-primary.mb-3:hover {
+    background-color: #b30000;
+    transform: scale(1.03);
+}
+
+/* ====== Tabel ====== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.table thead {
+    background-color: #6b0000 !important;
+    color: white;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.table th, .table td {
+    padding: 14px 18px;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #faf4f4;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #ffeaea;
+    transition: 0.2s;
+}
+
+/* ====== Tombol Edit & Hapus ====== */
+.btn.btn-warning.btn-sm {
+    background-color: #d2691e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.btn.btn-warning.btn-sm:hover {
+    background-color: #a0522d;
+}
+
+.btn.btn-danger.btn-sm {
+    background-color: #b30000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.btn.btn-danger.btn-sm:hover {
+    background-color: #6b0000;
+}
+
+/* ====== Pagination (kalau dipakai nanti) ====== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 5px;
+}
+
+.pagination button,
+.pagination a {
+    background-color: #6b0000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pagination a:hover,
+.pagination button:hover {
+    background-color: #b30000;
+}
+
+/* ====== Responsif ====== */
+@media (max-width: 768px) {
+    .table th, .table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .btn.btn-warning.btn-sm,
+    .btn.btn-danger.btn-sm {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+
+    .btn.btn-primary.mb-3 {
+        width: 100%;
+        font-size: 14px;
+    }
+}
