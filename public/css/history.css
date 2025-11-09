@@ -13,13 +13,41 @@
 .popup-overlay.show { visibility: visible; opacity: 1; }
 .struk-box {
     background: #fff;
-    padding: 30px 25px;
+    padding: 40px 35px;
     border-radius: 15px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    max-width: 420px;
-    width: 90%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    max-width: 440px;
+    width: 92%;
     animation: fadeIn 0.3s ease-in-out;
 }
+#strukItems div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+#strukItems div:last-child {
+    margin-bottom: 0;
+}
+.struk-box hr {
+    border-top: 2px solid #ddd;
+    margin: 22px 0;
+}
+.btn-red-long {
+    background-color: #7b0f0f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 70px;
+    font-weight: 600;
+    transition: all 0.25s ease-in-out;
+}
+.btn-red-long:hover {
+    background-color: #a51414;
+}
+.alamat p {
+    line-height: 1.5;
+}   
 #strukItems div {
     display: flex;
     justify-content: space-between;

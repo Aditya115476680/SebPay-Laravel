@@ -75,28 +75,44 @@
 {{-- === POPUP STRUK === --}}
 <div id="popupStruk" class="popup-overlay">
     <div class="popup-box struk-box text-center">
-        <h4 class="fw-bold mb-1 text-danger">Transaksi Struk</h4>
-        <p id="strukDate" class="text-muted mb-3"></p>
+        <h4 class="fw-bold mb-2 text-danger">Transaksi Struk</h4>
+        <p id="strukDate" class="text-muted mb-4"></p>
 
-        <div id="strukItems" class="mb-3 text-start px-2"></div>
+        {{-- daftar item --}}
+        <div id="strukItems" class="mb-4 text-start px-2"></div>
 
-        <hr class="my-3">
+        <hr class="my-4">
 
-        <div class="text-start mb-3 px-2">
-            <p><strong>SebPay Total Pembelian</strong></p>
-            <p><strong>TOTAL:</strong> <span class="float-end" id="strukTotal">Rp 0</span></p>
-            <p><strong>UANG BAYAR:</strong> <span class="float-end" id="strukBayar">Rp 0</span></p>
-            <p><strong>KEMBALIAN:</strong> <span class="float-end" id="strukKembali">Rp 0</span></p>
+        {{-- bagian total --}}
+        <div class="text-start mb-4 px-2">
+            <p class="fw-bold mb-2">SebPay Total Pembelian</p>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="fw-semibold">TOTAL</span>
+                <span id="strukTotal">Rp 0</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="fw-semibold">UANG BAYAR</span>
+                <span id="strukBayar">Rp 0</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="fw-semibold">KEMBALIAN</span>
+                <span id="strukKembali">Rp 0</span>
+            </div>
         </div>
 
-        <hr class="my-3">
+        <hr class="my-4">
 
-        <p class="fw-semibold text-dark mb-1">Jl. Rancamanyar / Kp. Cupu / RT 05 / RW 08 No.56</p>
-        <p class="text-muted mb-3">Waroenk Seblak</p>
+        {{-- alamat --}}
+        <div class="alamat">
+            <p class="fw-semibold text-dark mb-1">Jl. Rancamanyar / Kp. Cupu / RT 05 / RW 08 No.56</p>
+            <p class="text-muted mb-4">Waroenk Seblak</p>
+        </div>
 
-        <button class="btn btn-red-long" id="closeStruk">Kembali</button>
+        {{-- tombol --}}
+        <button class="btn btn-red-long mt-3" id="closeStruk">Kembali</button>
     </div>
 </div>
+    
 
 {{-- === TOAST === --}}
 <div id="toast" class="toast"></div>
