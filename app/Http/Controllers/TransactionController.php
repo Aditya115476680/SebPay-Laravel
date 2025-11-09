@@ -16,52 +16,53 @@ class TransactionController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'items' => 'required|array|min:1',
+{
+    $items = json_decode($request->items_json, true);
+
+    if (!$items || count($items) === 0) {
+        return back()->with('error', 'Tidak ada item dalam transaksi!');
+    }
+
+    $total = 0;
+    foreach ($items as $item) {
+        $topping = DB::table('toppings')->where('tp_id', $item['id'])->first();
+        if ($topping && $topping->tp_stock >= $item['qty']) {
+            $total += $topping->tp_price * $item['qty'];
+        } else {
+            return back()->with('error', 'Stok topping ' . $topping->tp_name . ' tidak cukup!');
+        }
+    }
+
+    DB::transaction(function () use ($items, $total, $request) {
+        $tr_id = DB::table('transactions')->insertGetId([
+            'tr_total_amount' => $total,
+            'tr_payment' => $request->bayar,
+            'tr_change' => $request->bayar - $total,
+            'tr_date' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        $items = $request->items;
-        $total = 0;
-
         foreach ($items as $item) {
-            $topping = DB::table('toppings')->where('tp_id', $item['tp_id'])->first();
-            if ($topping && $topping->tp_stock >= $item['qty']) {
-                $total += $topping->tp_price * $item['qty'];
-            } else {
-                return back()->with('error', 'Stok topping ' . $topping->tp_name . ' tidak cukup!');
-            }
-        }
+            $topping = DB::table('toppings')->where('tp_id', $item['id'])->first();
 
-        DB::transaction(function () use ($items, $total) {
-            $tr_id = DB::table('transactions')->insertGetId([
-                'tr_total_amount' => $total,
-                'tr_payment' => 0, // default sementara (belum dibayar)
-                'tr_change' => 0,  // default sementara (belum dihitung)
-                'tr_date' => now(),
+            DB::table('transaction_details')->insert([
+                'tr_dtl_tr_id' => $tr_id,
+                'tr_dtl_tp_id' => $item['id'],
+                'tr_dtl_qty' => $item['qty'],
+                'tr_dtl_subtotal' => $topping->tp_price * $item['qty'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
 
-            foreach ($items as $item) {
-                $topping = DB::table('toppings')->where('tp_id', $item['tp_id'])->first();
-                DB::table('transaction_details')->insert([
-                    'tr_dtl_tr_id' => $tr_id,                     // ✅ ubah nama kolomnya
-                    'tr_dtl_tp_id' => $item['tp_id'],             // ✅ ubah juga di sini
-                    'tr_dtl_qty' => $item['qty'],                 // ✅ sesuaikan
-                    'tr_dtl_subtotal' => $topping->tp_price * $item['qty'], // ✅ ubah subtotal
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                
-                DB::table('toppings')->where('tp_id', $item['tp_id'])
-                    ->decrement('tp_stock', $item['qty']);
-            }
-        });
+            DB::table('toppings')->where('tp_id', $item['id'])
+                ->decrement('tp_stock', $item['qty']);
+        }
+    });
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan!');
-    }
+    return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan!');
+}
+
 
     public function show($id)
     {
@@ -77,9 +78,29 @@ class TransactionController extends Controller
 
     public function history()
     {
-        $transactions = DB::table('transactions')->orderBy('tr_date', 'desc')->get();
+        $transactions = DB::table('transactions')
+            ->orderByDesc('created_at')
+            ->get();
+    
+        // Ambil detail per transaksi
+        $transactions->transform(function($trx) {
+            $details = DB::table('transaction_details')
+                ->join('toppings', 'transaction_details.tr_dtl_tp_id', '=', 'toppings.tp_id')
+                ->where('transaction_details.tr_dtl_tr_id', $trx->tr_id)
+                ->select(
+                    'toppings.tp_name',
+                    'transaction_details.tr_dtl_qty as qty',
+                    'transaction_details.tr_dtl_subtotal as subtotal'
+                )
+                ->get();
+    
+            $trx->details = $details;
+            return $trx;
+        });
+    
         return view('transactions.history', compact('transactions'));
     }
+    
 
     public function receipt($id)
     {

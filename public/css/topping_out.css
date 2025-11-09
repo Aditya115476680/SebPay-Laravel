@@ -1,0 +1,230 @@
+.kelola-topping-container {
+    padding: 20px;
+}
+.section-title {
+    font-weight: 700;
+    color: #6b0000;
+    margin-bottom: 15px;
+}
+
+/* === Tombol Tambah === */
+.btn-add {
+    background-color: #a00000;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    transition: 0.2s;
+}
+.btn-add:hover {
+    background-color: #d00000;
+}
+
+/* === GRID 3 KOLOM FIX === */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* fix 3 card sejajar */
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+    max-width: 1100px; /* biar pas di tengah layar laptop */
+    margin: 0 auto;
+}
+
+/* === CARD STYLE === */
+.topping-card {
+    background-color: #fafafa;
+    border: 2px solid #e0a200;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: 0.25s ease;
+    width: 100%;
+    max-width: 340px;
+    justify-self: center;
+}
+.topping-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+
+/* === GAMBAR === */
+.topping-img {
+  width: 100%;
+  height: 160px; /* tetap tinggi proporsional */
+  background: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.topping-image img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 2px solid #e0a200;
+}
+.no-image {
+    width: 100%;
+    height: 180px;
+    background-color: #f3f3f3;
+    color: #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #e0a200;
+    font-style: italic;
+}
+
+/* === ISI CARD === */
+.topping-info {
+    padding: 12px 16px;
+    color: #333;
+}
+.topping-info h5 {
+    color: #7b0000;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.topping-info p {
+    margin: 3px 0;
+    font-size: 14px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 card per baris di tablet */
+    }
+}
+@media (max-width: 600px) {
+    .cards-grid {
+        grid-template-columns: 1fr; /* 1 card per baris di HP */
+    }
+}
+
+/* === TABLE DEFAULT (untuk fallback tampilan lama) === */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.custom-table th {
+    background-color: #600000;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px 15px;
+}
+.custom-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 15px;
+}
+.custom-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* === POPUP OVERLAY === */
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.popup-overlay.show {
+    display: flex;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* === POPUP BOX === */
+.popup-box {
+    background: #fff;
+    width: 450px;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    animation: scaleUp 0.25s ease-in-out;
+    border-top: 8px solid #b30000;
+}
+.popup-box h5 {
+    text-align: center;
+    color: #b30000;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* === INPUTS === */
+.popup-box label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+}
+.popup-box .form-control,
+.popup-box .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    padding: 8px 10px;
+    font-size: 14px;
+    color: #333;
+    transition: 0.2s;
+}
+.popup-box .form-control:focus,
+.popup-box .form-select:focus {
+    border-color: #b30000;
+    box-shadow: 0 0 0 3px rgba(179, 0, 0, 0.15);
+}
+
+/* === BUTTONS === */
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+.btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+.btn-secondary {
+    background-color: #555;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background-color: #777;
+}
+.btn-danger {
+    background-color: #b00000;
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #e00000;
+}
+
+/* === ANIMASI === */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes scaleUp {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

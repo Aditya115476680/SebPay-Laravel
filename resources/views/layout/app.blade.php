@@ -6,6 +6,10 @@
     <title>@yield('title', 'SebPay')</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/kelola_topping.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/topping_in.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/topping_out.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transaksi.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/history.css') }}">
 
 </head>
 <body>
@@ -32,9 +36,7 @@
             <li class="{{ request()->is('transactions') ? 'active' : '' }}">
                 <a href="{{ url('/transactions') }}">Transaksi</a>
             </li>
-            <li class="{{ request()->is('historys') ? 'active' : '' }}">
-                <a href="{{ url('/historys') }}">Riwayat</a>
-            </li>
+            <a href="{{ route('transactions.history') }}">Riwayat Transaksi</a></li> {{-- ✅ Tambahkan ini --}}
             <li>
                 <a href="{{ url('/logout') }}">Logout</a>
             </li>

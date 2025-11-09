@@ -2,34 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $year = $request->input('year', date('Y')); // default tahun sekarang
+        $year = $request->input('year', date('Y'));
 
+        // Total topping
         $totalTopping = DB::table('toppings')->count();
 
-        $totalIn = DB::table('topping_movements')
-            ->whereYear('tp_mv_date', $year)
-            ->where('tp_mv_type', 'in')
-            ->sum('tp_mv_qty');
+        // Total transaksi
+        $totalTransaksi = DB::table('transactions')->count();
 
-        $totalOut = DB::table('topping_movements')
-            ->whereYear('tp_mv_date', $year)
-            ->where('tp_mv_type', 'out')
-            ->sum('tp_mv_qty');
+        // Profit bulanan (ambil dari subtotal per bulan)
+        $profitBulanan = DB::table('transaction_details')
+            ->join('transactions', 'transaction_details.tr_dtl_tr_id', '=', 'transactions.tr_id')
+            ->whereYear('transactions.tr_date', $year)
+            ->sum('transaction_details.tr_dtl_subtotal');
 
+        // Data grafik stok masuk / keluar
         $movements = DB::table('topping_movements')
             ->select('tp_mv_date', 'tp_mv_qty', 'tp_mv_type')
             ->whereYear('tp_mv_date', $year)
             ->orderBy('tp_mv_date', 'asc')
             ->get();
 
-        // Ambil tahun unik yang tersedia di tabel movement
+        // Ambil daftar tahun dari data movement
         $years = DB::table('topping_movements')
             ->selectRaw('YEAR(tp_mv_date) as year')
             ->distinct()
@@ -37,7 +38,12 @@ class DashboardController extends Controller
             ->pluck('year');
 
         return view('dashboard', compact(
-            'totalTopping', 'totalIn', 'totalOut', 'movements', 'years', 'year'
+            'totalTopping',
+            'totalTransaksi',
+            'profitBulanan',
+            'movements',
+            'years',
+            'year'
         ));
     }
 }

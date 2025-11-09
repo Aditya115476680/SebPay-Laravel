@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ToppingController extends Controller
 {
     public function index()
     {
         $toppings = DB::table('toppings')->orderBy('tp_id', 'desc')->get();
-        return view('toppings.index', compact('toppings'));
+
+        // Ambil semua nama file dari folder public/images
+        $imageFiles = collect(glob(public_path('images/*')))->map(function ($path) {
+            return basename($path);
+        });
+
+        return view('toppings.index', compact('toppings', 'imageFiles'));
     }
 
     public function store(Request $request)
@@ -23,16 +28,20 @@ class ToppingController extends Controller
             'tp_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        $imagePath = null;
+        $imageName = null;
+
+        // Simpan file langsung ke public/images
         if ($request->hasFile('tp_image')) {
-            $imagePath = $request->file('tp_image')->store('toppings', 'public');
+            $file = $request->file('tp_image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $imageName);
         }
 
         DB::table('toppings')->insert([
             'tp_name' => $request->tp_name,
             'tp_price' => $request->tp_price,
             'tp_stock' => $request->tp_stock,
-            'tp_image' => $imagePath,
+            'tp_image' => $imageName,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -40,48 +49,43 @@ class ToppingController extends Controller
         return redirect()->back()->with('success', 'Topping berhasil ditambahkan!');
     }
 
-    public function edit($id)
-    {
-        $topping = DB::table('toppings')->where('tp_id', $id)->first();
-        return response()->json($topping);
-    }
-
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'tp_name' => 'required|string|max:255',
-            'tp_price' => 'required|numeric',
-            'tp_stock' => 'required|integer|min:0',
-            'tp_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-        ]);
+{
+    $request->validate([
+        'tp_name' => 'required|string|max:255',
+        'tp_price' => 'required|numeric|min:0',
+    ]);
 
-        $topping = DB::table('toppings')->where('tp_id', $id)->first();
-        $imagePath = $topping->tp_image;
-
-        if ($request->hasFile('tp_image')) {
-            if ($imagePath && Storage::disk('public')->exists($imagePath)) {
-                Storage::disk('public')->delete($imagePath);
-            }
-            $imagePath = $request->file('tp_image')->store('toppings', 'public');
-        }
-
-        DB::table('toppings')->where('tp_id', $id)->update([
-            'tp_name' => $request->tp_name,
-            'tp_price' => $request->tp_price,
-            'tp_stock' => $request->tp_stock,
-            'tp_image' => $imagePath,
-            'updated_at' => now(),
-        ]);
-
-        return redirect()->back()->with('success', 'Topping berhasil diubah!');
+    $topping = DB::table('toppings')->where('tp_id', $id)->first();
+    if (!$topping) {
+        return redirect()->route('toppings.index')->with('error', 'Topping tidak ditemukan!');
     }
+
+    $data = [
+        'tp_name' => $request->tp_name,
+        'tp_price' => $request->tp_price,
+        'updated_at' => now(),
+    ];
+
+    if ($request->hasFile('tp_image')) {
+        $file = $request->file('tp_image');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('images'), $filename);
+        $data['tp_image'] = $filename;
+    }
+
+    DB::table('toppings')->where('tp_id', $id)->update($data);
+
+    return redirect()->route('toppings.index')->with('success', 'Topping berhasil diperbarui!');
+}
+
 
     public function destroy($id)
     {
         $topping = DB::table('toppings')->where('tp_id', $id)->first();
 
-        if ($topping && $topping->tp_image && Storage::disk('public')->exists($topping->tp_image)) {
-            Storage::disk('public')->delete($topping->tp_image);
+        if ($topping && $topping->tp_image && file_exists(public_path('images/' . $topping->tp_image))) {
+            unlink(public_path('images/' . $topping->tp_image));
         }
 
         DB::table('toppings')->where('tp_id', $id)->delete();

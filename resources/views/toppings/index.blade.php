@@ -2,60 +2,67 @@
 
 @section('content')
 <div class="container mt-4 kelola-topping-container">
-    <h4 class="section-title">KELOLA TOPPING</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="section-title">KELOLA TOPPING</h4>
+        <button id="openPopup" class="btn btn-add">+ Tambah Topping</button>
+    </div>
 
-    <button id="openPopup" class="btn btn-add">
-        + Tambah Topping
-    </button>
+    {{-- Grid Card --}}
+    <div class="row g-4">
+        @forelse($toppings as $tp)
+        <div class="col-md-3 col-sm-6">
+            <div class="topping-card shadow-sm">
 
-    <table class="custom-table">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Topping</th>
-                <th>Harga (Rp)</th>
-                <th>Stok</th>
-                <th class="text-end">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($toppings as $i => $tp)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $tp->tp_name }}</td>
-                <td>Rp {{ number_format($tp->tp_price, 0, ',', '.') }}</td>
-                <td>{{ $tp->tp_stock }}</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="btn btn-edit" onclick="openPopup('{{ $tp->tp_id }}')">Edit</button>
-                        <form action="{{ route('toppings.destroy', $tp->tp_id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-delete" onclick="return confirm('Hapus topping ini?')">Hapus</button>
-                        </form>
-                    </div>
-                </td>
-                
-            </tr>   
+                {{-- Gambar --}}
+                <div class="topping-img">
+                    @if($tp->tp_image && file_exists(public_path('images/' . $tp->tp_image)))
+                        <img src="{{ asset('images/' . $tp->tp_image) }}" alt="{{ $tp->tp_name }}" class="topping-image">
+                    @else
+                        <img src="{{ asset('images/no-image.png') }}" alt="{{ $tp->tp_name }}" class="topping-image">
+                    @endif
+                </div>
 
-            {{-- Popup Edit --}}
-            <div id="popupEdit{{ $tp->tp_id }}" class="popup-overlay">
-                <div class="popup-box">
-                    <h5>Edit Topping</h5>
-                    <form action="{{ route('toppings.update', $tp->tp_id) }}" method="POST">
+                {{-- Detail --}}
+                <div class="topping-info">
+                    <h6 class="topping-name">{{ $tp->tp_name }}</h6>
+                    <p class="topping-stock">Stok: <span>{{ $tp->tp_stock }}</span></p>
+                    <p class="topping-price">Rp {{ number_format($tp->tp_price, 0, ',', '.') }}</p>
+                </div>
+
+                {{-- Tombol --}}
+                <div class="topping-actions">
+                    <button class="btn btn-edit" onclick="openPopup('{{ $tp->tp_id }}')">Ubah</button>
+
+                    {{-- Hapus pakai popup konfirmasi custom --}}
+                    <button type="button" class="btn btn-delete" onclick="confirmDelete('{{ $tp->tp_id }}', '{{ $tp->tp_name }}')">Hapus</button>
+                    
+                    <form id="deleteForm{{ $tp->tp_id }}" action="{{ route('toppings.destroy', $tp->tp_id) }}" method="POST" style="display:none;">
                         @csrf
-                        @method('PUT')
-                        @include('toppings.form', ['topping' => $tp])
-                        <div class="popup-actions">
-                            <button type="button" class="btn btn-secondary" onclick="closePopup('{{ $tp->tp_id }}')">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
+                        @method('DELETE')
                     </form>
                 </div>
             </div>
-            @endforeach
-        </tbody>
-    </table>
+        </div>
+
+        {{-- Popup Edit --}}
+        <div id="popupEdit{{ $tp->tp_id }}" class="popup-overlay">
+            <div class="popup-box">
+                <h5>Edit Topping</h5>
+                <form action="{{ route('toppings.update', $tp->tp_id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    @include('toppings.form', ['topping' => $tp])
+                    <div class="popup-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closePopup('{{ $tp->tp_id }}')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @empty
+            <div class="text-center text-muted mt-5">Belum ada topping ditambahkan</div>
+        @endforelse
+    </div>
 </div>
 
 <!-- Popup Tambah -->
@@ -73,6 +80,22 @@
     </div>
 </div>
 
+{{-- Popup Konfirmasi Hapus --}}
+<div id="popupDelete" class="popup-overlay">
+    <div class="popup-box text-center">
+        <h5>Konfirmasi Hapus</h5>
+        <p id="deleteMessage"></p>
+        <div class="popup-actions mt-3">
+            <button id="confirmDeleteBtn" class="btn btn-danger">Hapus</button>
+            <button type="button" id="cancelDeleteBtn" class="btn btn-secondary">Batal</button>
+        </div>
+    </div>
+</div>
+
+{{-- Toast Notification --}}
+<div id="toast" class="toast"></div>
+
+{{-- === SCRIPT === --}}
 <script>
 function openPopup(id) {
     document.getElementById('popupEdit' + id).classList.add('show');
@@ -86,152 +109,37 @@ document.getElementById('openPopup').addEventListener('click', () => {
 document.getElementById('closePopup').addEventListener('click', () => {
     document.getElementById('popupOverlay').classList.remove('show');
 });
+
+// === Konfirmasi Hapus Custom ===
+let deleteId = null;
+function confirmDelete(id, name) {
+    deleteId = id;
+    const popup = document.getElementById('popupDelete');
+    document.getElementById('deleteMessage').innerHTML = `Apakah kamu yakin ingin menghapus topping <strong>“${name}”</strong>?`;
+    popup.classList.add('show');
+}
+document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    if (deleteId) {
+        document.getElementById('deleteForm' + deleteId).submit();
+    }
+});
+document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+    document.getElementById('popupDelete').classList.remove('show');
+});
+
+// === Toast Notification ===
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+@if (session('success'))
+    showToast("✅ {{ session('success') }}", 'success');
+@endif
+@if (session('error'))
+    showToast("❌ {{ session('error') }}", 'error');
+@endif
 </script>
-
-<style>
-/* === Layout & Title === */
-.kelola-topping-container {
-    padding: 20px;
-}
-.section-title {
-    font-weight: 700;
-    color: #6b0000;
-    margin-bottom: 15px;
-}
-
-/* === Button Tambah === */
-.btn-add {
-    background-color: #6b0000;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    margin-bottom: 25px;
-    transition: 0.2s;
-}
-.btn-add:hover {
-    background-color: #a00000;
-}
-
-/* === Table Styling === */
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.custom-table th {
-    background-color: #600000;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 14px;
-    padding: 12px 15px;
-}
-
-.custom-table td {
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
-    color: #333;
-    font-size: 15px;
-}
-
-.custom-table tr:last-child td {
-    border-bottom: none;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: flex-end; /* sejajarkan ke kanan */
-  align-items: center;       /* posisi vertikal sejajar */
-  gap: 10px;                 /* jarak antar tombol */
-}
-
-/* Align Aksi ke kanan */
-.text-end {
-    text-align: center;
-}
-
-.custom-table td .action-btn {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px; /* jarak antar tombol */
-}
-/* === Tombol Edit === */
-.btn-edit {
-    background-color: #c46a00;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
-}
-.btn-edit:hover { background-color: #e08100; }
-
-.btn-delete {
-    background-color: #a00000;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
-}
-.btn-delete:hover { background-color: #d40000; }
-
-/* === Popup === */
-.popup-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-.popup-overlay.show {
-    display: flex;
-    animation: fadeIn 0.2s ease-in;
-}
-
-.popup-box {
-    background: #fff;
-    padding: 20px;
-    width: 420px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    animation: scaleUp 0.25s ease-in-out;
-}
-
-.popup-box h5 {
-    font-weight: 600;
-    color: #6b0000;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.popup-actions {
-    display: flex;
-    justify-content: end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-/* Animasi */
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-@keyframes scaleUp {
-    from {transform: scale(0.8);}
-    to {transform: scale(1);}
-}
-</style>
 @endsection
