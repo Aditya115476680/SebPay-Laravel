@@ -356,6 +356,22 @@
     .btn.btn-success:hover {
       background-color: rgb(85, 255, 0);
     }
+    .border-low {
+      border: 2px solid #f0ad4e !important;  /* kuning */
+  }
+  
+  .border-empty {
+      border: 2px solid #d9534f !important;  /* merah */
+      background: #ffe5e5; /* sedikit merah agar kelihatan habis */
+  }
+  .topping-stock.text-danger {
+    font-size: 14px;
+    background: #ffe5e5;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
     /* Animasi popup hapus */
 .popup-overlay.show {
     display: flex !important;

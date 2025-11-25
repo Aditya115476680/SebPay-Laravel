@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->decimal('tr_total_amount');
             $table->decimal('tr_payment', 10, 2);
             $table->decimal('tr_change', 10, 2);
-            $table->date('tr_date');
+            $table->dateTime('tr_date');
             $table->timestamps();
         });
     }

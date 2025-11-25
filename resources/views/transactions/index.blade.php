@@ -13,17 +13,23 @@
             {{-- === DAFTAR TOPPING (KIRI) === --}}
             <div class="cards-grid">
                 @foreach($toppings as $tp)
-                <div class="topping-card" 
-                    data-id="{{ $tp->tp_id }}" 
-                    data-name="{{ $tp->tp_name }}" 
-                    data-price="{{ $tp->tp_price }}" 
+                <div class="topping-card {{ $tp->tp_stock == 0 ? 'disabled-card' : '' }}"
+                    data-id="{{ $tp->tp_id }}"
+                    data-name="{{ $tp->tp_name }}"
+                    data-price="{{ $tp->tp_price }}"
                     data-stock="{{ $tp->tp_stock }}">
+               
                     
                     <img src="{{ asset('images/' . ($tp->tp_image ?? 'no-image.png')) }}" 
                          class="topping-image" alt="{{ $tp->tp_name }}">
                     <div class="card-body">
                         <h6>{{ $tp->tp_name }}</h6>
-                        <p>Stok: <strong>{{ $tp->tp_stock }}</strong></p>
+                        @if($tp->tp_stock == 0)
+    <p class="text-danger fw-bold">Stok Habis</p>
+@else
+    <p>Stok: <strong>{{ $tp->tp_stock }}</strong></p>
+@endif
+
                         <div class="qty-buttons">
                             <button type="button" class="btn-qty minus">−</button>
                             <span class="qty">0</span>
@@ -199,9 +205,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // === Saat klik Selesai ===
-    formTransaksi.addEventListener("submit", () => {
-        showToast("✅ Transaksi berhasil disimpan!", "success");
-    });
+    // === Saat klik Selesai ===
+// HAPUS TOAST OTOMATIS DI SUBMIT
+// Biar Laravel yg ngasih notifikasi dari session
+
+// Tampilkan toast jika session ada
+@if (session('success'))
+    showToast("{{ session('success') }}", "success");
+@endif
+@if (session('error'))
+    showToast("{{ session('error') }}", "error");
+@endif
+
 });
 </script>
 @endsection

@@ -9,7 +9,7 @@
 
 /* === Tombol Tambah === */
 .btn-add {
-    background-color: #a00000;
+    background-color: #15600b;
     color: #fff;
     border: none;
     padding: 10px 18px;
@@ -19,7 +19,7 @@
     transition: 0.2s;
 }
 .btn-add:hover {
-    background-color: #d00000;
+    background-color: #2ac906;
 }
 
 /* === GRID 3 KOLOM FIX === */
@@ -212,7 +212,7 @@
     background-color: #777;
 }
 .btn-danger {
-    background-color: #b00000;
+    background-color: #380606;
     color: white;
 }
 .btn-danger:hover {

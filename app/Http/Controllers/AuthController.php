@@ -24,8 +24,12 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = DB::table('users')->where('username', $request->username)->first();
+        // Ambil user berdasarkan username, tapi case-insensitive dulu
+        $user = DB::table('users')
+            ->whereRaw('BINARY username = ?', [$request->username])   // ⬅ Tambahan penting!
+            ->first();
 
+        // Jika username cocok secara case-sensitive & password valid
         if ($user && Hash::check($request->password, $user->password)) {
             Session::put('user', $user);
             return redirect('/dashboard');

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class ToppingController extends Controller
 {
+    
     public function index()
     {
         $toppings = DB::table('toppings')->orderBy('tp_id', 'desc')->get();
@@ -45,7 +46,7 @@ class ToppingController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+        
         return redirect()->back()->with('success', 'Topping berhasil ditambahkan!');
     }
 
@@ -64,8 +65,10 @@ class ToppingController extends Controller
     $data = [
         'tp_name' => $request->tp_name,
         'tp_price' => $request->tp_price,
+        'tp_stock' => $request->tp_stock,
         'updated_at' => now(),
     ];
+    
 
     if ($request->hasFile('tp_image')) {
         $file = $request->file('tp_image');

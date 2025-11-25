@@ -9,7 +9,7 @@
 
 /* Tombol Tambah */
 .btn-add {
-  background-color: #6b0000;
+  background-color: #15600b;
   color: white;
   border: none;
   border-radius: 10px;
@@ -18,7 +18,7 @@
   transition: 0.25s;
 }
 .btn-add:hover {
-  background-color: #a00000;
+  background-color: #02c919;
 }
 
 /* === GRID CARD FIX === */

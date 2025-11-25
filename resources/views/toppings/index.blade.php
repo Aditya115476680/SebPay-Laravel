@@ -11,7 +11,17 @@
     <div class="row g-4">
         @forelse($toppings as $tp)
         <div class="col-md-3 col-sm-6">
-            <div class="topping-card shadow-sm">
+            @php
+    $borderClass = '';
+    if ($tp->tp_stock == 0) {
+        $borderClass = 'border-empty';
+    } elseif ($tp->tp_stock <= 5) {
+        $borderClass = 'border-low';
+    }
+@endphp
+
+<div class="topping-card shadow-sm {{ $borderClass }}">
+
 
                 {{-- Gambar --}}
                 <div class="topping-img">
@@ -25,7 +35,12 @@
                 {{-- Detail --}}
                 <div class="topping-info">
                     <h6 class="topping-name">{{ $tp->tp_name }}</h6>
-                    <p class="topping-stock">Stok: <span>{{ $tp->tp_stock }}</span></p>
+                    @if($tp->tp_stock == 0)
+                         <p class="topping-stock text-danger fw-bold">Stok Habis</p>
+                    @else
+                          <p class="topping-stock">Stok: <span>{{ $tp->tp_stock }}</span></p>
+                    @endif
+
                     <p class="topping-price">Rp {{ number_format($tp->tp_price, 0, ',', '.') }}</p>
                 </div>
 
@@ -54,7 +69,7 @@
                     @include('toppings.form', ['topping' => $tp])
                     <div class="popup-actions">
                         <button type="button" class="btn btn-secondary" onclick="closePopup('{{ $tp->tp_id }}')">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>

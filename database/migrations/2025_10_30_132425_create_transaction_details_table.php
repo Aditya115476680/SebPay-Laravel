@@ -9,13 +9,16 @@ return new class extends Migration {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->bigIncrements('tr_dt_id');
             $table->unsignedBigInteger('tr_dtl_tr_id');
-            $table->unsignedBigInteger('tr_dtl_tp_id');
+            $table->unsignedBigInteger('tr_dtl_tp_id')->nullable();
+            $table->string('tp_name')->nullable();
+            $table->integer('tp_price')->nullable();
             $table->integer('tr_dtl_qty');
             $table->decimal('tr_dtl_subtotal', 10, 2);
             $table->timestamps();
 
             $table->foreign('tr_dtl_tr_id')->references('tr_id')->on('transactions')->onDelete('cascade');
-            $table->foreign('tr_dtl_tp_id')->references('tp_id')->on('toppings')->onDelete('cascade');
+
+            $table->foreign('tr_dtl_tp_id')->references('tp_id')->on('toppings')->onDelete('set null');
         });
     }
 

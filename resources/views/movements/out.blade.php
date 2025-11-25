@@ -39,7 +39,7 @@
 
                 <div class="popup-actions">
                     <button type="button" id="closePopup" class="btn btn-secondary">Batal</button>
-                    <button type="submit" class="btn btn-danger">Simpan</button>
+                    <button type="submit" class="btn btn-danger">Keluar</button>
                 </div>
             </form>
         </div>
@@ -54,13 +54,13 @@
                     ? asset('images/' . $topping->tp_image)
                     : asset('images/no-image.png');
             @endphp
-    
+
             <div class="topping-card">
-                <div class="topping-image">
-                    <img src="{{ $imagePath }}" alt="{{ $mv->tp_name }}" class="w-100" style="height: 180px; object-fit: cover;">
+                <div class="topping-img">
+                    <img src="{{ $imagePath }}" alt="{{ $mv->tp_name }}" class="topping-image">
                 </div>
-                <div class="topping-info" style="padding: 12px 14px;">
-                    <h5 style="margin-bottom: 6px;">{{ $mv->tp_name }}</h5>
+                <div class="topping-info">
+                    <h5>{{ $mv->tp_name }}</h5>
                     <p><strong>Jumlah Keluar:</strong> {{ $mv->tp_mv_qty }}</p>
                     <p><strong>Alasan:</strong> {{ $mv->tp_mv_reason }}</p>
                     <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($mv->tp_mv_date)->format('Y-m-d') }}</p>
@@ -94,9 +94,7 @@ function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     toast.textContent = message;
     toast.className = 'toast show ' + type;
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 2500);
+    setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
 // === FLASH MESSAGE DARI LARAVEL ===
