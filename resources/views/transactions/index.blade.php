@@ -70,7 +70,6 @@
                     <label>Uang Bayar</label>
                     <input type="number" id="uangBayar" name="bayar" class="form-control" placeholder="Masukkan nominal" min="0" required>
                 </div>
-
                 <div class="mb-2 d-flex justify-content-between">
                     <label>Kembalian</label>
                     <span id="popupKembalian">Rp 0</span>

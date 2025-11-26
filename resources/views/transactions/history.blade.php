@@ -63,44 +63,117 @@
 
 {{-- === POPUP STRUK === --}}
 <div id="popupStruk" class="popup-overlay">
-  <div class="popup-box struk-box text-center">
-    <h4 class="fw-bold mb-2 text-danger">Transaksi Struk</h4>
-    <p id="strukDate" class="text-muted mb-4"></p>
+  <div class="popup-box struk-box">
 
-    <div id="strukItems" class="mb-4 text-start px-2"></div>
-    <hr class="my-4">
+    <h4>Transaksi Struk</h4>
+    <p id="strukDate"></p>
 
-    <div class="text-start mb-4 px-2">
-      <p class="fw-bold mb-3">SebPay Total Pembelian</p>
+    <div class="struk-separator"></div>
 
-      <div class="d-flex justify-content-between mb-2">
-        <span class="fw-semibold">TOTAL</span>
-        <span id="strukTotal">Rp 0</span>
+    <div id="strukItems"></div>
+
+    <div class="struk-separator"></div>
+
+    <div class="struk-summary px-2">
+      <div class="row">
+        <span>TOTAL</span>
+        <span id="strukTotal"></span>
       </div>
-
-      <div class="d-flex justify-content-between mb-2">
-        <span class="fw-semibold">UANG BAYAR</span>
-        <span id="strukBayar">Rp 0</span>
+      <div class="row">
+        <span>UANG BAYAR</span>
+        <span id="strukBayar"></span>
       </div>
-
-      <div class="d-flex justify-content-between">
-        <span class="fw-semibold">KEMBALIAN</span>
-        <span id="strukKembali">Rp 0</span>
+      <div class="row">
+        <span>KEMBALIAN</span>
+        <span id="strukKembali"></span>
       </div>
     </div>
 
-    <hr class="my-4">
+    <div class="struk-separator"></div>
 
     <div class="struk-footer">
       <p class="alamat">Jl. Rancamanyar / Kp. Cupu / RT 05 / RW 08 No.56</p>
-      <p class="text-muted">Waroenk Seblak</p>
-  </div>
-  
+      <p>Waroenk Seblak</p>
+    </div>
 
-    <button class="btn btn-red-long mt-3" id="closeStruk">Kembali</button>
+    <button class="btn btn-red-long" id="closeStruk">Kembali</button>
   </div>
 </div>
 
+<style>
+
+/* POPUP STRUK STYLE */
+.struk-box {
+  width: 320px; /* seperti kertas struk thermal */
+  background: #fff;
+  padding: 22px;
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0,0,0,.4);
+  font-family: "Courier New", monospace; /* FONT PRINTER STRUK */
+  color: #000;
+  text-align: left !important;
+}
+
+/* Judul & Tanggal */
+.struk-box h4 {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4px;
+  color: #000 !important;
+}
+#strukDate {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+/* Separator garis */
+.struk-separator {
+  border-top: 1px dashed #000;
+  margin: 8px 0;
+}
+
+/* LIST BARANG */
+#strukItems .item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+/* BAGIAN SUMMARY */
+.struk-summary .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Footer */
+.struk-footer {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 12px;
+}
+.struk-footer .alamat {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* Tombol */
+#closeStruk {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px 0;
+  background: #7b0000;
+  border-radius: 6px;
+  font-family: Arial;
+}
+
+
+</style>
 
 {{-- === TOAST === --}}
 <div id="toast" class="toast"></div>

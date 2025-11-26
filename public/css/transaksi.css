@@ -179,119 +179,114 @@
     pointer-events: none;
     border: 2px solid #d9534f;
 }
+.struk-card {
+  width: 320px;     /* biar kayak lebar struk thermal */
+  background: #fff;
+  padding: 22px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px rgba(0,0,0,.35);
+  font-family: "Courier New", monospace; /* FONT STRUK */
+  color: #000;
+}
+
 .struk-title {
-    font-weight: 700;
-    color: #7b0000;
-    margin: 0;
-    margin-bottom: 4px;
-    font-size: 20px;
-    text-align: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 2px;
 }
 
 .struk-date {
-    color: #333;
-    font-size: 14px;
-    margin: 0;
-    margin-bottom: 25px;
-    text-align: center;
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 12px;
 }
 
-.struk-date {
-    color: #444;
-    font-size: 14px;
-    margin-bottom: 20px;
-    text-align: center; /* center */
-    width: 100%;
+.separator {
+  border-top: 1px dashed #000;
+  margin: 8px 0;
 }
 
-
+/* === ITEM LIST === */
 .struk-items {
-    margin-bottom: 20px;
-    width: 100%;
+  margin-bottom: 20px;
+  width: 100%;
 }
-.struk-summary {
-    margin-top: 20px;
-    margin-bottom: 25px;
-}
-
-.struk-summary .row-line {
-    display: flex;
-    justify-content: space-between;
-    font-size: 15px;
-    margin-bottom: 6px;
-}
-
-.struk-summary .label {
-    font-weight: 600;
-    color: #222;
-}
-
-.struk-summary .value {
-    font-weight: 500;
-}
-
-.struk-footer {
-    margin-top: 25px;
-    text-align: center;
-}
-
-.struk-footer p {
-    margin: 0;
-    font-size: 14px;
-}
-
-.struk-footer .alamat {
-    font-weight: 600;
-}
-
 
 .item-row {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    margin-bottom: 8px;
-    font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 3px;
 }
 
 .item-name {
-    text-align: left;
+  max-width: 140px;
+  display: inline-block;
 }
 
 .item-qty {
-    text-align: center;
-    width: 40px;
+  width: 30px;
+  text-align: center;
 }
 
 .item-price {
-    text-align: right;
+  text-align: right;
+  width: 70px;
 }
 
-.total-section {
-    margin-top: 20px;
-    margin-bottom: 20px;
+
+.row-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+/* === SUMMARY === */
+.struk-summary {
+  margin: 20px 0 25px 0;
+}
+
+.row-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 6px;
 }
 
 .label {
-    font-weight: 700;
-    font-size: 14px;
+  font-weight: 700;
 }
 
 .value {
-    font-size: 14px;
+  font-weight: 500;
 }
 
+/* === FOOTER === */
+.struk-footer {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.struk-footer p {
+  margin: 1px 0;
+}
+
+.struk-footer .alamat {
+  font-weight: 600;
+}
+
+/* === BUTTON === */
 .btn-done {
-    width: 100%;
-    background: #7b0000;
-    color: #fff;
-    border: none;
-    padding: 12px 0;
-    border-radius: 10px;
-    font-weight: 600;
-    margin-top: 15px;
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px 0;
+  background: #7b0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
