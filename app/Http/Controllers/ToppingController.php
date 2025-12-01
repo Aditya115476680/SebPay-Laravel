@@ -23,10 +23,12 @@ class ToppingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tp_name' => 'required|string|max:255',
+            'tp_name' => 'required|string|max:255|unique:toppings,tp_name',
             'tp_price' => 'required|numeric',
             'tp_stock' => 'required|integer|min:0',
             'tp_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        ], [
+            'tp_name.unique' => 'Topping sudah ada di daftar!',
         ]);
 
         $imageName = null;
@@ -53,9 +55,13 @@ class ToppingController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'tp_name' => 'required|string|max:255',
+        'tp_name' => 'required|string|max:255|unique:toppings,tp_name,' . $id . ',tp_id',
         'tp_price' => 'required|numeric|min:0',
+    ], [
+        'tp_name.unique' => 'Topping sudah ada di daftar!',
     ]);
+    
+    
 
     $topping = DB::table('toppings')->where('tp_id', $id)->first();
     if (!$topping) {
@@ -96,3 +102,4 @@ class ToppingController extends Controller
         return redirect()->back()->with('success', 'Topping berhasil dihapus!');
     }
 }
+

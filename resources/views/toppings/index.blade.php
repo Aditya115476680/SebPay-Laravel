@@ -156,5 +156,11 @@ function showToast(message, type = 'success') {
 @if (session('error'))
     showToast("❌ {{ session('error') }}", 'error');
 @endif
+@if ($errors->any())
+    showToast("❌ {{ $errors->first() }}", 'error');
+@endif
+
+
+
 </script>
 @endsection
