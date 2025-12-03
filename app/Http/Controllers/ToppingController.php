@@ -71,7 +71,6 @@ class ToppingController extends Controller
     $data = [
         'tp_name' => $request->tp_name,
         'tp_price' => $request->tp_price,
-        'tp_stock' => $request->tp_stock,
         'updated_at' => now(),
     ];
     
