@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionController extends Controller
 {
@@ -133,4 +134,28 @@ class TransactionController extends Controller
 
         return view('transactions.receipt', compact('trx', 'details'));
     }
+
+    public function cetakStruk($id)
+    {
+        // Ambil transaksi
+        $trx = DB::table('transactions')->where('tr_id', $id)->first();
+    
+        if (!$trx) {
+            abort(404);
+        }
+    
+        // Ambil detail transaksi (pakai kolom yg benar)
+        $details = DB::table('transaction_details')
+            ->where('tr_dtl_tr_id', $id)
+            ->get();
+    
+        // Load view PDF
+        $pdf = Pdf::loadView('pdf.struk', [
+            'trx' => $trx,
+            'details' => $details
+        ])->setPaper([0, 0, 226.77, 600], 'portrait');
+    
+        return $pdf->stream("struk-$id.pdf");
+    }
+    
 }

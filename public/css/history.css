@@ -120,8 +120,8 @@
     gap: 12px;
   }
   .btn-pagination {
-    background-color: #7b0000;
-    color: #fff;
+    background-color: #cce208;
+    color: #ffffffcc;
     border: none;
     padding: 6px 14px;
     border-radius: 6px;
@@ -130,8 +130,28 @@
     transition: 0.2s;
   }
   .btn-pagination:hover {
-    background-color: #a00000;
+    background-color: #a07b00;
   }
   #pageInfo {
     font-weight: 600;
   }
+
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table thead th {
+    background: #600000;
+    color: white;
+    padding: 12px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  
+  .custom-table tbody td {
+    padding: 10px;
+    text-align: center;
+  }
+  

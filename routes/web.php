@@ -36,3 +36,5 @@ Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('
 
 Route::get('/riwayat-transaksi', [TransactionController::class, 'history'])->name('transactions.history');
 Route::get('/struk/{id}', [TransactionController::class, 'receipt'])->name('transactions.receipt');
+Route::get('/transaksi/{id}/cetak', [TransactionController::class, 'cetakStruk'])->name('transaksi.cetak');
+

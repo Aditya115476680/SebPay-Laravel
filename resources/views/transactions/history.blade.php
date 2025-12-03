@@ -20,7 +20,7 @@
     <div class="text-center text-muted mt-5">Belum ada transaksi dilakukan.</div>
   @else
   <div class="table-responsive">
-    <table class="custom-table text-center align-middle" id="riwayatTable">
+    <table class="custom-table text-left align-middle" id="riwayatTable">
       <thead>
         <tr>
           <th>No</th>
@@ -36,15 +36,23 @@
           <td class="tanggal">{{ \Carbon\Carbon::parse($trx->tr_date ?? $trx->created_at)->format('d/m/Y H:i') }}</td>
           <td>Rp {{ number_format($trx->tr_total_amount ?? 0, 0, ',', '.') }}</td>
           <td>
-            <button class="btn btn-sm btn-primary lihat-struk-btn"
-  E            data-id="{{ $trx->tr_id }}"
-              data-date="{{ \Carbon\Carbon::parse($trx->tr_date ?? $trx->created_at)->format('d/m/Y H:i') }}"
-              data-items='@json($trx->details)'
-              data-total="{{ $trx->tr_total_amount }}"
-              data-bayar="{{ $trx->tr_payment }}"
-              data-kembali="{{ $trx->tr_change }}">
-              Lihat
-            </button>
+            
+              <button class="btn btn-sm btn-primary lihat-struk-btn"
+                data-id="{{ $trx->tr_id }}"
+                data-date="{{ \Carbon\Carbon::parse($trx->tr_date ?? $trx->created_at)->format('d/m/Y H:i') }}"
+                data-items='@json($trx->details)'
+                data-total="{{ $trx->tr_total_amount }}"
+                data-bayar="{{ $trx->tr_payment }}"
+                data-kembali="{{ $trx->tr_change }}">
+                Lihat
+              </button>
+          
+              <a href="{{ route('transaksi.cetak', $trx->tr_id) }}" target="_blank"
+                 class="btn btn-sm btn-warning mt-1">
+                 Cetak
+              </a>
+          
+          
           </td>
         </tr>
         @endforeach
@@ -113,6 +121,8 @@
   color: #000;
   text-align: left !important;
 }
+
+
 
 /* Judul & Tanggal */
 .struk-box h4 {
